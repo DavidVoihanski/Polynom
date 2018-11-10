@@ -3,7 +3,7 @@ package myMath;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-//test
+
 /**
  * This class represents a Polynom with add, multiply functionality, it also
  * should support the following: 1. Riemann's Integral:
