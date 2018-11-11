@@ -46,21 +46,18 @@ public class Polynom implements Polynom_able {
 	 *            String input which represents the soon to be Polynom
 	 */
 	public Polynom(String str) {// string Ploynom constructor supported by the Monom class string constructor
-		if (str.equals("0")) {
+		if (str.equals("0") || str.equals("")) {// in case the string is just "0" or the empty one
 			this.polynom = new ArrayList<>();
 			return;
 		}
-		this.polynom = new ArrayList<>();
-		ArrayList<Monom> helpingP = initStringPolynom(str);// getting the ArrayList which is the output of the
-															// initStringPolynom method
-		Iterator<Monom> it = helpingP.iterator();
-		while (it.hasNext()) {// iterating on all the helping list Monoms and adding it to the "this" Polynom
-								// - as a constructor
-			Monom runningMonom = it.next();
-			this.polynom.add(runningMonom);
+		str = str.toLowerCase();// making sure the string is in all small letters
+		Polynom newPolynom = initStringPolynom(str);// sending the string to a supporting private method which will
+													// create a new Polynom
+		for (Monom current : newPolynom.polynom) {// sort of depp copying the polynom
+			this.polynom.add(current);
 		}
-		Comparator<Monom> cmpMonoms = new Monom_Comperator();
-		this.polynom.sort(cmpMonoms);// sorting all Monoms in the list by their power
+		Comparator<Monom> cmp = new Monom_Comperator();
+		this.polynom.sort(cmp);// sorting it
 		this.fixUp();// in case one of these Monoms is zero we'll remove it, as it
 		// has no value
 	}
@@ -462,32 +459,33 @@ public class Polynom implements Polynom_able {
 	 *         constructor
 	 */
 	private static ArrayList<Monom> initStringPolynom(String str) {
-		str.toLowerCase();
-		String helpingString = "";
-		ArrayList<Monom> helpingP = new ArrayList<>();
-		for (int i = 0; i < str.length(); i++) {// iterating for every character in the input string and copying it to
-												// the helping string, in case we find a '-' character, we double
-												// it,this will help us to know whether a certain Monom was originally
-												// negative after the split
-			if (str.charAt(i) == '-' && i != 0) {
-				helpingString += "-" + str.charAt(i);
+		Polynom outPut = new Polynom();// this will be the output of this method
+		String helpingStr = "";
+		for (int i = 0; i < str.length(); i++) {// replacing every '-' char with "-*" to represent the '-' in further
+												// use
+			if (str.charAt(i) == '-') {
+				helpingStr = helpingStr + "" + str.charAt(i) + "*";
 			} else
-				helpingString += "" + str.charAt(i);
+				helpingStr = helpingStr + str.charAt(i);
 		}
-		String array[] = helpingString.split("(-)|(\\+)");// splitting the string on '+' and '-'
-															// Characters, this way, if there was a negative Monom, we
-															// will get an empty element in an array cell, this way we
-															// will get indication about negative monoms
-
-		for (int i = 0; i < array.length; i++) {
-			if (array[i].equals("")) {
-				array[i + 1] = "-" + array[i + 1];
-			} else {
-				Monom current = new Monom(array[i]);// using the string Monom constructor
-				if (current.get_coefficient() != 0)
-					helpingP.add(current);
-			}
+		this.polynom = new ArrayList<>();// setting the ArrayList
+		String strArr[] = helpingStr.split("\\+");// splitting around '+'
+		String strArr_2[];// helping array we might need in case we got '-'
+		for (String runningStr : strArr) {
+			if (runningStr.contains("-")) {// if the string contains "-" we will want to split it again around "-"
+				strArr_2 = runningStr.split("-");
+				for (int i = 0; i < strArr_2.length; i++) {
+					if (strArr_2[i].contains("*")) {// this way we know if there was a '-' before the split
+						Monom m = new Monom(strArr_2[i].replaceAll("\\*", "-"));// replacing all '*' we got with '-' as
+																				// we already stated
+						outPut.add(m);
+					} else if (!runningStr.equals("")) {//in case we havn't got a '-'
+						Monom m = new Monom(strArr_2[i]);
+						this.polynom.add(m);
+					}
+				}
+			} else
+				outPut.add(new Monom(runningStr));
 		}
-		return helpingP;
-	}
+		return outPut;
 }

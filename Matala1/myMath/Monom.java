@@ -48,7 +48,10 @@ public class Monom implements function {
 			this.set_power(0);
 		}
 		// in case the string isn't empty - turn it to a Monom type object
-		Monom newM = initStringMonom(str);
+		str = str.toLowerCase();// to handle a case in which we got big letters
+		Monom newM = initStringMonom(str);// sending the lower case string to a private method which will handle with
+											// all cases
+		// setting up new Monoms value's based on the Monom just created
 		this.set_coefficient(newM.get_coefficient());
 		this.set_power(newM.get_power());
 
@@ -169,18 +172,26 @@ public class Monom implements function {
 	 */
 	@Override
 	public String toString() {
-		if (this.get_coefficient() == 0) {
+		if (this.get_coefficient() == 0)// in Monoms coefficient is zero, the form of its printing will be "0"
 			return "0";
-		} else if (this._coefficient == 1 && this._power != 0)// if this is Monoms coefficient is 1, it has no meaning,
-																// we'll
-			// print only the variable and the power;
-
-			return "x" + "^" + _power;
-		else if (this._power == 0) {// if this Monoms power is zero, we only interested in the coefficient, as any
-			// x^0=1
-			return "" + _coefficient;
+		if (this.get_power() == 1) {// in case the power is one, we don't need to print the part "..^.." because it
+									// has no numeric value
+			if (this.get_coefficient() == -1)
+				return "-x";
+			else if (this.get_coefficient() == 1)
+				return "x";
+			else
+				return "" + this.get_coefficient() + "x";
+		} else if (this.get_power() == 0)// in case Monos power is 0, the variable x has no meaning as any number^0=1
+			return "" + this.get_coefficient();
+		else {// in case the power isn't 0 or 1, well just print it all
+			if (this.get_coefficient() == 1) {
+				return "x^" + this.get_power();
+			} else if (this.get_coefficient() == (-1)) {
+				return "-x^" + this.get_power();
+			}
+			return "" + this.get_coefficient() + "x^" + this.get_power();
 		}
-		return _coefficient + "x" + "^" + _power;
 	}
 	//////////////////////////// private supporting methods:
 
@@ -192,25 +203,169 @@ public class Monom implements function {
 	 * @return a new Monom type object which will be used in the String constructor
 	 */
 	private static Monom initStringMonom(String str) {
-		str.toLowerCase();
-		char cArray[] = str.toCharArray();
-		int index = 0;
-		String coefficient = "";
-		String power = "";
-		while (cArray[index] != 'x') {// getting the coefficient of this certain Monom as a String
-			coefficient += "" + cArray[index];
-			index++;
+		Monom OutPut = null;// setting up a null Monom for later use
+		if (str.equals("")) {// in case we got an empty string, turning it to the zero Monom
+			return OutPut = new Monom(0, 0);
 		}
-		double coefficientD = Double.parseDouble(coefficient);// turning it to a double value
-		while (index < cArray.length) {// getting the power of this certain Monom as a String
-			if (cArray[index] != '^' && cArray[index] != 'x') {
-				power += cArray[index];
+		if (howManyChar(str, 'x') == 1) {// in case there is one 'x' char in the input string we got
+			if (str.indexOf('x') == 0 || (str.indexOf('x') == 1)) {// Checking whether the 'x' char is in the first or
+																	// second place in the string
+				if (str.indexOf('x') == str.length() - 1) {// if the 'x' char is in the last place of the string and
+															// there is only one char before it
+					if (str.charAt(0) == '-')// checking if the char before the 'x' is a '-'
+						OutPut = new Monom(-1, 1);
+					else if (str.charAt(0) == 'x') {// if the first char is 'x'
+						OutPut = new Monom(1, 1);
+					} else {// if the 'x' is the second char and the last one of this string we'll check if
+							// the first char is a double type number - if it is we'll creat a Monom, if not
+							// - we'll throw an exception
+						boolean isNumber = true;
+						try {
+							Double.parseDouble("" + str.charAt(0));
+						} catch (Exception e) {
+							isNumber = false;
+						}
+						if (isNumber) {
+							OutPut = creatMonomWithNoPower(str);
+						} else {
+							throw new RuntimeException("WRONG INPUT FOR " + "" + str.charAt(0));
+						}
+					}
+				} else if (str.indexOf('^') != (str.indexOf('x') + 1)) {// in case the 'x' char isnt the last char in
+																		// the string, we'll start looking for a '^'
+																		// char and check whether its logically correct
+																		// written
+					throw new RuntimeException("POWER HAS TO BE RIGHT AFTER THE 'x' ");
+				} else if (str.indexOf('^') == str.length()) {// in case the '^' char hasn't followed by chars
+					throw new RuntimeException("POLYNOM CANT END WITH '^' ");
+				} else {// in case the '^' char is logically right written - checking if the number
+						// after it is an integer type number
+					try {
+						Integer.parseInt(str.substring(str.indexOf('^') + 1));
+					} catch (Exception e) {
+						throw new RuntimeException("WRONG VALUE FOR " + str.substring(str.indexOf('^') + 1));
+					}
+					OutPut = creatMonomWithPower(str);// if it is - creating a Monom with a power
+				}
+			} else {// in case the 'x' char isnt the first or second char in the string, checking
+					// whether the char sequence before it represents a double type number
+				try {
+					Double.parseDouble(str.substring(0, str.indexOf('x')));
+				} catch (Exception e) {
+					throw new RuntimeException("WRONG VALUE FOR " + str.substring(0, str.indexOf('x')));
+				}
+				if (howManyChar(str, '^') == 1) {// checking if we got an '^' char in the string
+					if (str.indexOf('^') != (str.indexOf('x') + 1)) {// if we do, checking if it is logically written
+						throw new RuntimeException("POWER HAS TO BE RIGHT AFTER THE 'x' ");
+					} else if (str.indexOf('^') == str.length()) {
+						throw new RuntimeException("POLYNOM CANT END WITH '^' ");
+					} else {// if it is - checking if the char sequence after it represents an integer
+						try {
+							Integer.parseInt(str.substring(str.indexOf('^') + 1));
+						} catch (Exception e) {
+							throw new RuntimeException("WRONG VALUE FOR " + str.substring(str.indexOf('^') + 1));
+						}
+						OutPut = creatMonomWithPower(str);// creating a Monom with a power
+					}
+				} else if (howManyChar(str, '^') == 0) {// if we got no '^' chars
+					if (str.indexOf('x') == str.length() - 1)// checking whether the 'x' is the last char
+						OutPut = creatMonomWithNoPower(str);// if it is creating an x with no power
+				} else
+					throw new RuntimeException("NUMBERS AFTER 'x' ARE FOUND ");
 			}
-			index++;
+		} else if (howManyChar(str, 'x') == 0) {// in case we got no 'x' chars in the string
+			try {// checking whether the string represents a double type number
+				Double.parseDouble(str);
+			} catch (Exception e) {
+				throw new RuntimeException("WRONG VALUE FOR " + str);
+			}
+			OutPut = creatMonomWithNoPower(str);// if it is - creating a Monom which is just a number with no variable
+		} else {
+			throw new RuntimeException("YOU HAVE TOO MANY 'x' IN THIS STRING TO REPRESENT A MONOM");// in case we got
+																									// more than one 'x'
+																									// char
 		}
-		int powerI = Integer.parseInt(power);// turning it to a integer value
-		Monom outPut = new Monom(coefficientD, powerI);
-		return outPut;
+		return OutPut;
+	}
+
+	// private methods which supprot the Monom String constructor, building Monoms
+	// from all kinds based on the logical state which the "innit" method is in
+	private static Monom creatMonomWithNoPower(String str) {
+		boolean hasVar = false;
+		if (str.contains("x"))
+			hasVar = true;
+		String helpingString = "";
+		char[] cArray = str.toCharArray();
+		Monom OutPut;
+		double coefficient = 0;
+		int index = 0;
+		char c = cArray[index];
+		while (index < cArray.length && c != 'x') {
+			helpingString += "" + c;
+			index++;
+			if (index < cArray.length)
+				c = cArray[index];
+		}
+		coefficient = Double.parseDouble(helpingString);
+		if (hasVar)
+			OutPut = new Monom(coefficient, 1);
+		else
+			OutPut = new Monom(coefficient, 0);
+		return OutPut;
+	}
+
+	private static Monom creatMonomWithPower(String str) {
+		String helpingString = "";
+		char[] cArray = str.toCharArray();
+		Monom OutPut;
+		boolean hasVar = true;
+		int power = 0;
+		double coefficient = 0;
+		int index = 0;
+		char c = cArray[index];
+		while (c != 'x') {
+			helpingString += "" + c;
+			index++;
+			c = cArray[index];
+		}
+		if (helpingString.equals("-")) {
+			helpingString = "-1";
+		}
+		if (!helpingString.equals("")) {
+			coefficient = Double.parseDouble(helpingString);
+			helpingString = "";
+		} else {
+			hasVar = false;
+		}
+		index += 2;
+		c = cArray[index];
+		while (index < cArray.length) {
+			helpingString += "" + c;
+			index++;
+			if (index < cArray.length)
+				c = cArray[index];
+		}
+		try {
+			power = Integer.parseInt(helpingString);
+		} catch (Exception e) {
+			throw new RuntimeException("POWER IS NOT INT");
+		}
+		if (hasVar)
+			OutPut = new Monom(coefficient, power);
+		else
+			OutPut = new Monom(1, power);
+		return OutPut;
+	}
+
+	// private method that calculates how many of certain char is in a string,
+	// supporting the "innit" Monom method
+	private static int howManyChar(String str, char c) {
+		int sum = 0;
+		for (int index = 0; index < str.length(); index++) {
+			if (str.charAt(index) == c)
+				sum++;
+		}
+		return sum;
 	}
 	// ****************** Private Methods and Data *****************
 
