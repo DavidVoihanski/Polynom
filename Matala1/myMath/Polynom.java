@@ -225,31 +225,21 @@ public class Polynom implements Polynom_able {
 	 *            accurate area
 	 * 
 	 * @return the double value of the point on the x axis which returns zero y
+	 * 
+	 * NOTE: Took the algorithm from https://en.wikipedia.org/wiki/Bisection_method
 	 */
 	@Override
 	public double root(double x0, double x1, double eps) {
-		if (x0 >= x1) {
-			throw new RuntimeException("WRONG BORDER VALUES!");
+		double middle=0;
+
+		if (x0 >= x1) throw new RuntimeException("WRONG BORDER VALUES!");
+	    if(this.f(x0)*this.f(x1)>0)throw new RuntimeException("ERR: NO ROOT IN GIVEN RANGE!");
+		while(x1-x0>eps) {						//if the difference is bigger than eps
+			middle=(x0+x1)/2.0;					//calculates mid point
+			if(f(x0)*f(middle)>0)x0=middle;		//ignore the left side
+			else x1=middle;						//ignore the right side
 		}
-		double mid = (x0 + x1) / 2;// setting the middle value to be the average between two borders
-		double negative, positive;
-		if (this.f(x0) < 0) {// determine which of the y value of the borders is the negative and the
-								// positive ones
-			negative = x0;
-			positive = x1;
-		} else {
-			negative = x1;
-			positive = x0;
-		}
-		while (this.f(mid) < -eps || this.f(mid) > eps) {// as long as the deviation is bigger than eps, keep looking
-			if (this.f(mid) < 0) {// this is how we know on which half to focus after every iteration
-				negative = mid;
-			} else {
-				positive = mid;
-			}
-			mid = (positive + negative) / 2;// keep getting the middle value
-		}
-		return mid;// after the deviation is less than eps, return the middle value
+		return x1;								//returns the root in the given range
 	}
 
 	/**
