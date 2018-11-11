@@ -358,8 +358,7 @@ public class Polynom implements Polynom_able {
 	 * of x1 and to the left of x1 as asked, using the numeric method of splitting
 	 * the area to eps based rectangle and summing their surface
 	 * 
-	 * NOTE:if (x0>=x1) ===> the method will always return 0, as the borders are
-	 * logically not correct
+	 * NOTE:if (x0>x1) ===> the method will swap them
 	 * 
 	 * NOTE2:this method will ignore rectangles which f(x0)<0 or f(x1)<0, as this
 	 * method calculates only the area above x-axis
@@ -375,27 +374,33 @@ public class Polynom implements Polynom_able {
 	 *            ASSUMED to be 0.01 or smaller, PLEASE NOTICE that a large eps will
 	 *            return not accurate area
 	 * 
-	 * @return the approximate area between the x axis and the Polynom function
+	 * @return the approximate area above the x axis under the Polynom function
 	 */
 	@Override
 	public double area(double x0, double x1, double eps) {
-		if (x0 >= x1)
-			return 0;
-		double sum = 0;
-		double epsSteps = 1;
-		while (x0 + (epsSteps * eps) <= x1) {// as long as the amount we still between the bounds given
-			if (this.f(x0) >= 0 && this.f(x1) >= 0)
-				sum += ((this.f(x0 + ((epsSteps - 1) * eps)) + this.f(x0 + (epsSteps * eps))) * eps) / 2;// calculate
-																											// the
-																											// rectangle
-																											// surface
-																											// and
-																											// add it
-																											// all
-																											// together
-			epsSteps++;// move another step forward
+
+		double area=0;			//temp for holding each area
+		double sumOfArea=0;  	//sums of all the rectangles
+		double h=0;				//height
+
+		if(x0>x1) {				//swaps
+			double temp=x0;
+			x0=x1;
+			x1=temp;
+
 		}
-		return sum;
+		while(x0+eps<=x1) {
+			h=f(x0);
+			area=eps*h;
+			if(area>0)sumOfArea=sumOfArea+area;		//if above x axis
+			x0=x0+eps;
+		}
+		if(x0<x1) {								//calculates the remaining distance between x0-x1 when it's smaller than eps
+			double width=x1-x0;
+			area=width*f(x0);
+			if(area>0)sumOfArea=sumOfArea+area; //if above x axis
+		}
+		return sumOfArea;
 	}
 
 	//////////////////////////// private supporting methods:
