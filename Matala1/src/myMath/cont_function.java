@@ -15,3 +15,4 @@ public interface cont_function extends function{
 	 */
 	public double area(double x0, double x1, double eps);
 }
+

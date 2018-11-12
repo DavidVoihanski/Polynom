@@ -50,10 +50,13 @@ public class Polynom implements Polynom_able {
 			this.polynom = new ArrayList<>();
 			return;
 		}
+		this.polynom = new ArrayList<>();
 		str = str.toLowerCase();// making sure the string is in all small letters
-		Polynom newPolynom = initStringPolynom(str);// sending the string to a supporting private method which will
+		Polynom newPolynom = initStringPolynom(str);// sending the string to a supporting private method which will //
 													// create a new Polynom
-		for (Monom current : newPolynom.polynom) {// sort of depp copying the polynom
+		Iterator<Monom> it = newPolynom.iteretor();
+		while (it.hasNext()) {
+			Monom current = it.next();
 			this.polynom.add(current);
 		}
 		Comparator<Monom> cmp = new Monom_Comperator();
@@ -223,20 +226,25 @@ public class Polynom implements Polynom_able {
 	 * 
 	 * @return the double value of the point on the x axis which returns zero y
 	 * 
-	 * NOTE: Took the algorithm from https://en.wikipedia.org/wiki/Bisection_method
+	 *         NOTE: Took the algorithm from
+	 *         https://en.wikipedia.org/wiki/Bisection_method
 	 */
 	@Override
 	public double root(double x0, double x1, double eps) {
-		double middle=0;
+		double middle = 0;
 
-		if (x0 >= x1) throw new RuntimeException("WRONG BORDER VALUES!");
-	    if(this.f(x0)*this.f(x1)>0)throw new RuntimeException("ERR: NO ROOT IN GIVEN RANGE!");
-		while(x1-x0>eps) {						//if the difference is bigger than eps
-			middle=(x0+x1)/2.0;					//calculates mid point
-			if(f(x0)*f(middle)>0)x0=middle;		//ignore the left side
-			else x1=middle;						//ignore the right side
+		if (x0 >= x1)
+			throw new RuntimeException("WRONG BORDER VALUES!");
+		if (this.f(x0) * this.f(x1) > 0)
+			throw new RuntimeException("ERR: NO ROOT IN GIVEN RANGE!");
+		while (x1 - x0 > eps) { // if the difference is bigger than eps
+			middle = (x0 + x1) / 2.0; // calculates mid point
+			if (f(x0) * f(middle) > 0)
+				x0 = middle; // ignore the left side
+			else
+				x1 = middle; // ignore the right side
 		}
-		return x1;								//returns the root in the given range
+		return x1; // returns the root in the given range
 	}
 
 	/**
@@ -366,31 +374,73 @@ public class Polynom implements Polynom_able {
 	@Override
 	public double area(double x0, double x1, double eps) {
 
-		double area=0;			//temp for holding each area
-		double sumOfArea=0;  	//sums of all the rectangles
-		double h=0;				//height
+		double area = 0; // temp for holding each area
+		double sumOfArea = 0; // sums of all the rectangles
+		double h = 0; // height
 
-		if(x0>x1) {				//swaps
-			double temp=x0;
-			x0=x1;
-			x1=temp;
+		if (x0 > x1) { // swaps
+			double temp = x0;
+			x0 = x1;
+			x1 = temp;
 
 		}
-		while(x0+eps<=x1) {
-			h=f(x0);
-			area=eps*h;
-			if(area>0)sumOfArea=sumOfArea+area;		//if above x axis
-			x0=x0+eps;
+		while (x0 + eps <= x1) {
+			h = f(x0);
+			area = eps * h;
+			if (area > 0)
+				sumOfArea = sumOfArea + area; // if above x axis
+			x0 = x0 + eps;
 		}
-		if(x0<x1) {								//calculates the remaining distance between x0-x1 when it's smaller than eps
-			double width=x1-x0;
-			area=width*f(x0);
-			if(area>0)sumOfArea=sumOfArea+area; //if above x axis
+		if (x0 < x1) { // calculates the remaining distance between x0-x1 when it's smaller than eps
+			double width = x1 - x0;
+			area = width * f(x0);
+			if (area > 0)
+				sumOfArea = sumOfArea + area; // if above x axis
 		}
 		return sumOfArea;
 	}
 
 	//////////////////////////// private supporting methods:
+	/**
+	 * private static method which supports Polynom String constructor
+	 * 
+	 * @param str
+	 *            String type variable which represents the soon to be Polynom
+	 * 
+	 * @return a new ArrayList type object which will be used in the String
+	 *         constructor
+	 */
+	private static Polynom initStringPolynom(String str) {
+		Polynom outPut = new Polynom();// this will be the output of this method
+		String helpingStr = "";
+		for (int i = 0; i < str.length(); i++) {// replacing every '-' char with "-*" to represent the '-' in further
+												// use
+			if (str.charAt(i) == '-') {
+				helpingStr = helpingStr + "" + str.charAt(i) + "*";
+			} else
+				helpingStr = helpingStr + str.charAt(i);
+		}
+		String strArr[] = helpingStr.split("\\+");// splitting around '+'
+		String strArr_2[];// helping array we might need in case we got '-'
+		for (String runningStr : strArr) {
+			if (runningStr.contains("-")) {// if the string contains "-" we will want to split it again around "-"
+				strArr_2 = runningStr.split("-");
+				for (int i = 0; i < strArr_2.length; i++) {
+					if (strArr_2[i].contains("*")) {// this way we know if there was a '-' before the split
+						Monom m = new Monom(strArr_2[i].replaceAll("\\*", "-"));// replacing all '*' we got with '-' as
+																				// we already stated
+						outPut.add(m);
+					} else if (!runningStr.equals("")) {// in case we havn't got a '-'
+						Monom m = new Monom(strArr_2[i]);
+						outPut.add(m);
+					}
+				}
+			} else
+				outPut.add(new Monom(runningStr));
+		}
+		return outPut;
+	}
+
 	/**
 	 * helping private method which subtract one Monom from the Polynom, this method
 	 * is created to support the subtract between Polynoms which we had to implement
@@ -430,62 +480,23 @@ public class Polynom implements Polynom_able {
 	 */
 	private void fixUp() {
 		Iterator<Monom> it = this.iteretor();
-		Iterator<Monom> it2 = this.iteretor();
-		if (it2.hasNext())
-			it2.next();
-		while (it2.hasNext()) {
-			Monom runningMonom = it.next();
-			Monom runningMonom2 = it2.next();
-			if (runningMonom.get_power() == runningMonom2.get_power()) {
-				runningMonom.add(runningMonom2);
-				it2.remove();
+		Monom runningMonom = null;
+		while (it.hasNext()) {
+			runningMonom = it.next();
+			if (runningMonom.get_coefficient() == 0)
+				it.remove();
+		}
+		for (int index = 0; index < this.polynom.size() - 1; index++) {
+			if (this.polynom.get(index).get_power() == this.polynom.get(index + 1).get_power()) {
+				this.polynom.get(index).add(this.polynom.get(index + 1));
+				this.polynom.remove(index + 1);
 			}
 		}
 		it = this.iteretor();
 		while (it.hasNext()) {
-			Monom runningMonom = it.next();
+			runningMonom = it.next();
 			if (runningMonom.get_coefficient() == 0)
 				it.remove();
 		}
 	}
-
-	/**
-	 * private static method which supports Polynom String constructor
-	 * 
-	 * @param str
-	 *            String type variable which represents the soon to be Polynom
-	 * 
-	 * @return a new ArrayList type object which will be used in the String
-	 *         constructor
-	 */
-	private static ArrayList<Monom> initStringPolynom(String str) {
-		Polynom outPut = new Polynom();// this will be the output of this method
-		String helpingStr = "";
-		for (int i = 0; i < str.length(); i++) {// replacing every '-' char with "-*" to represent the '-' in further
-												// use
-			if (str.charAt(i) == '-') {
-				helpingStr = helpingStr + "" + str.charAt(i) + "*";
-			} else
-				helpingStr = helpingStr + str.charAt(i);
-		}
-		this.polynom = new ArrayList<>();// setting the ArrayList
-		String strArr[] = helpingStr.split("\\+");// splitting around '+'
-		String strArr_2[];// helping array we might need in case we got '-'
-		for (String runningStr : strArr) {
-			if (runningStr.contains("-")) {// if the string contains "-" we will want to split it again around "-"
-				strArr_2 = runningStr.split("-");
-				for (int i = 0; i < strArr_2.length; i++) {
-					if (strArr_2[i].contains("*")) {// this way we know if there was a '-' before the split
-						Monom m = new Monom(strArr_2[i].replaceAll("\\*", "-"));// replacing all '*' we got with '-' as
-																				// we already stated
-						outPut.add(m);
-					} else if (!runningStr.equals("")) {//in case we havn't got a '-'
-						Monom m = new Monom(strArr_2[i]);
-						this.polynom.add(m);
-					}
-				}
-			} else
-				outPut.add(new Monom(runningStr));
-		}
-		return outPut;
 }
