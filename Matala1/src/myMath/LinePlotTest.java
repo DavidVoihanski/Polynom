@@ -34,9 +34,7 @@ public class LinePlotTest extends JFrame {
 		 Color color = new Color(0.0f, 0.3f, 1.0f);
 		 DataTable min=new DataTable(Double.class,Double.class);
 		 color=color.red;
-		 for (double x = -5.0; x <= 5.0; x+=0.10) {
 		 min.add(0.0,0.0);
-		 }
 		 plot.add(min);
 		 plot.getPointRenderers(min).get(0).setColor(color);
 		 frame.setVisible(true);
