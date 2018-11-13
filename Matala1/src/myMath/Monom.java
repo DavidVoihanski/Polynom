@@ -8,7 +8,7 @@ package myMath;
  * support simple operations as: construction, value at x, derivative, add and
  * multiply.
  * 
- * @author Boaz
+ * @author Evgeny&David
  *
  */
 public class Monom implements function {
