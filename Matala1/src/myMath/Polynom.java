@@ -459,8 +459,18 @@ public class Polynom implements Polynom_able {
 		}
 		return -sumOfArea; // makes the answer positive because area can't be negative
 	}
-
-
+	/**
+	 * 
+	 */
+	public ArrayList<Point> minMax(double x0,double x1) {
+		
+		ArrayList<Double>suspected=localExtremum(x0, x1);
+		if(suspected.size()==0)return null;
+		ArrayList<Point>points=sortPoints(suspected);
+		findGlobalP(x0,x1,points);
+		return points;
+		
+	}
 	//////////////////////////// private supporting methods:
 	/**
 	 * private static method which supports Polynom String constructor
@@ -560,7 +570,7 @@ public class Polynom implements Polynom_able {
 				it.remove();
 		}
 	}
-<<<<<<< HEAD
+
 	//identifies if a point is a minima or a maxima
 	private ArrayList<Point> sortPoints(ArrayList<Double> arr) {
 
@@ -608,35 +618,37 @@ public class Polynom implements Polynom_able {
 			newMax=new Point(x1,y1);
 		}
 		while(it.hasNext()) {
+			
 			temp=it.next();
 			if(temp.isGlobalMin()&&y0<temp.getY()) {
 				temp.setGlobalMin(false);
 				if(!areEqual) {
 				newMin.setGlobalMin(true);
-				points.add(newMin);
+				//points.add(newMin);
 				}
 				else {
 					newMin.setGlobalMin(true);
 					newMax.setGlobalMin(true);
-					points.add(newMin);
-					points.add(newMax);
+//					points.add(newMin);
+//					points.add(newMax);
 				}
 			}
-			if(temp.isGlobalMin()&&y0>temp.getY()) {
+			if(temp.isGlobalMax()&&y0>temp.getY()) {
 				temp.setGlobalMax(false);
 				if(!areEqual) {
-				newMin.setGlobalMax(true);
-				points.add(newMin);
+				newMax.setGlobalMax(true);
+				//points.add(newMin);
 				}
 				else {
 					newMin.setGlobalMax(true);
 					newMax.setGlobalMax(true);
-					points.add(newMin);
-					points.add(newMax);
+//					points.add(newMin);
+//					points.add(newMax);
 				}
 			}
 		}
-
+		if(newMin.isGlobalMin()||newMin.isGlobalMax())points.add(newMin);
+		if(newMax.isGlobalMax()||newMax.isGlobalMin())points.add(newMax);
 
 
 	}
@@ -653,7 +665,7 @@ public class Polynom implements Polynom_able {
 			if(minP.getY()>temp.getY()) {
 				minP=temp;
 				Iterator<Point>it2=points.iterator();
-				while(it2.hasNext())it.next().setGlobalMin(false);		//resets all previous Global mins
+				while(it2.hasNext())it2.next().setGlobalMin(false);		//resets all previous Global mins
 				minP.setGlobalMin(true);
 			}
 			else if(minP.getY()==temp.getY())temp.setGlobalMin(true);
@@ -672,13 +684,13 @@ public class Polynom implements Polynom_able {
 			if(maxP.getY()<temp.getY()) {
 				maxP=temp;
 				Iterator<Point>it2=points.iterator();
-				while(it2.hasNext())it.next().setGlobalMax(false);		//resets all previous Global mins
+				while(it2.hasNext())it2.next().setGlobalMax(false);		//resets all previous Global mins
 				maxP.setGlobalMax(true);
 			}
 			else if(maxP.getY()==temp.getY())temp.setGlobalMax(true);
 		}
 	}
-=======
+
 	/**
 	 * returns the local extremum points in the Polynom used on in a certain given
 	 * borders NOTE: if (x0>x1) ===> the method will swap them
@@ -715,5 +727,5 @@ public class Polynom implements Polynom_able {
 		return pArray;
 	}
 
->>>>>>> 09e6c9fa40a675a047307b33537f51f4d18f1ebb
+
 }
