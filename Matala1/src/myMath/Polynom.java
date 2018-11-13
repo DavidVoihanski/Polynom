@@ -10,7 +10,7 @@ import java.util.Iterator;
  * https://en.wikipedia.org/wiki/Riemann_integral 2. Finding a numerical value
  * between two values (currently support root only f(x)=0). 3. Derivative
  * 
- * @author Boaz
+ * @author Evgeny&David
  *
  */
 public class Polynom implements Polynom_able {
@@ -45,7 +45,8 @@ public class Polynom implements Polynom_able {
 	 * @param str
 	 *            String input which represents the soon to be Polynom
 	 */
-	public Polynom(String str)throws RuntimeException {// string Ploynom constructor supported by the Monom class string constructor
+	public Polynom(String str) throws RuntimeException {// string Ploynom constructor supported by the Monom class
+														// string constructor
 		if (str.equals("0") || str.equals("")) {// in case the string is just "0" or the empty one
 			this.polynom = new ArrayList<>();
 			return;
@@ -230,13 +231,19 @@ public class Polynom implements Polynom_able {
 	 *         https://en.wikipedia.org/wiki/Bisection_method
 	 */
 	@Override
-	public double root(double x0, double x1, double eps)throws RuntimeException {
+	public double root(double x0, double x1, double eps) throws RuntimeException {
 		double middle = 0;
 
-		if (x0 >= x1)
-			throw new RuntimeException("WRONG BORDER VALUES!");
+		if (x0 > x1) { // swaps
+			System.out.println("x0 has bigger vaule than x1, values SWAPPED");
+			double temp = x0;
+			x0 = x1;
+			x1 = temp;
+
+		}
 		if (this.f(x0) * this.f(x1) > 0)
-			throw new RuntimeException("ERR: NO ROOT IN GIVEN RANGE!");
+			throw new RuntimeException("ERR: NO ROOT IN GIVEN RANGE!");// in this case we don't know how to handle the
+																		// situation
 		while (x1 - x0 > eps) { // if the difference is bigger than eps
 			middle = (x0 + x1) / 2.0; // calculates mid point
 			if (f(x0) * f(middle) > 0)
@@ -349,14 +356,14 @@ public class Polynom implements Polynom_able {
 	}
 
 	/**
-	 * calculates the area above x-axis of a polynom in a certain given borders, to the right
-	 * of x0 and to the left of x1 as asked, using the numeric method of splitting
-	 * the area to eps based rectangle and summing their surface
+	 * calculates the area above x-axis of a polynom in a certain given borders, to
+	 * the right of x0 and to the left of x1 as asked, using the numeric method of
+	 * splitting the area to eps based rectangle and summing their surface
 	 * 
 	 * NOTE:if (x0>x1) ===> the method will swap them
 	 * 
-	 * NOTE2:this method will ignore rectangles for which the area is negative, as this
-	 * method calculates only the area above x-axis
+	 * NOTE2:this method will ignore rectangles for which the area is negative, as
+	 * this method calculates only the area above x-axis
 	 * 
 	 * @param x0
 	 *            double type variable, the start of the range in which we calculate
@@ -400,15 +407,16 @@ public class Polynom implements Polynom_able {
 		}
 		return sumOfArea;
 	}
+
 	/**
-	 * calculates the area below x-axis of a polynom in a certain given borders, to the right
-	 * of x0 and to the left of x1 as asked, using the numeric method of splitting
-	 * the area to eps based rectangle and summing their surface
+	 * calculates the area below x-axis of a polynom in a certain given borders, to
+	 * the right of x0 and to the left of x1 as asked, using the numeric method of
+	 * splitting the area to eps based rectangle and summing their surface
 	 * 
 	 * NOTE:if (x0>x1) ===> the method will swap them
 	 * 
-	 * NOTE2:this method will ignore rectangles for which the area is positive, as this
-	 * method calculates only the area below x-axis
+	 * NOTE2:this method will ignore rectangles for which the area is positive, as
+	 * this method calculates only the area below x-axis
 	 * 
 	 * @param x0
 	 *            double type variable, the start of the range in which we calculate
@@ -448,8 +456,9 @@ public class Polynom implements Polynom_able {
 			if (area < 0)
 				sumOfArea = sumOfArea + area; // if below x axis
 		}
-		return -sumOfArea;   //makes the answer positive because area can't be negative
+		return -sumOfArea; // makes the answer positive because area can't be negative
 	}
+
 
 	//////////////////////////// private supporting methods:
 	/**
@@ -550,4 +559,40 @@ public class Polynom implements Polynom_able {
 				it.remove();
 		}
 	}
+	/**
+	 * returns the local extremum points in the Polynom used on in a certain given
+	 * borders NOTE: if (x0>x1) ===> the method will swap them
+	 * 
+	 * @param x0
+	 *            is the start of the given border
+	 * @param x1
+	 *            is the end of the given border
+	 * @return an ArrayList which contains all x values which represents the local
+	 *         extremum points, NOTE: if there are no local extremum points in the
+	 *         given border will return empty ArrayList
+	 */
+	private ArrayList<Double> localExtremum(double x0, double x1) {
+		if (x0 > x1) { // swaps
+			System.out.println("x0 has bigger vaule than x1, values SWAPPED");
+			double temp = x0;
+			x0 = x1;
+			x1 = temp;
+		}
+		ArrayList<Double> pArray = new ArrayList<>();
+		Polynom dev = (Polynom) this.derivative();
+		double extremumX;
+		double eps = 0.1;
+		double currentX = x0;
+		while (currentX <= x1) {
+			if (dev.f(currentX) * dev.f(currentX + eps) < 0) {
+				if (dev.derivative().f(currentX) != eps && dev.derivative().f(currentX) != -eps) {
+					extremumX = dev.root(currentX, (currentX + eps), eps);
+					pArray.add(extremumX);
+				}
+			}
+			currentX += eps;
+		}
+		return pArray;
+	}
+
 }
