@@ -1,5 +1,6 @@
 package myMath;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -54,7 +55,7 @@ public class Polynom implements Polynom_able {
 		this.polynom = new ArrayList<>();
 		str = str.toLowerCase();// making sure the string is in all small letters
 		Polynom newPolynom = initStringPolynom(str);// sending the string to a supporting private method which will //
-													// create a new Polynom
+		// create a new Polynom
 		Iterator<Monom> it = newPolynom.iteretor();
 		while (it.hasNext()) {
 			Monom current = it.next();
@@ -115,7 +116,7 @@ public class Polynom implements Polynom_able {
 		Iterator<Monom> it = this.iteretor();
 		boolean isAdded = false;
 		while (it.hasNext() && !isAdded) {// as long as the Monom isn't added yet, and there are more Monoms in the list
-											// to check with
+			// to check with
 			Monom runningMonom = it.next();
 			if (runningMonom.get_power() == m1.get_power()) {// we will sum both Monoms only if their powers are equal
 				runningMonom.add(m1);// using Monoms "add" method
@@ -123,7 +124,7 @@ public class Polynom implements Polynom_able {
 			}
 		}
 		if (!isAdded) {// in case we haven't found similar power as the input, we'll just add it as
-						// another element and sort the arrayList as asked
+			// another element and sort the arrayList as asked
 			polynom.add(m1);
 			Comparator<Monom> cmpMonoms = new Monom_Comperator();
 			polynom.sort(cmpMonoms);
@@ -142,7 +143,7 @@ public class Polynom implements Polynom_able {
 	@Override
 	public void multiply(Polynom_able p1) {
 		Polynom outPut = new Polynom();// creating new Polynom which will "host" the multiply between pairs of Monoms,
-										// we do this to prevent double multiplying
+		// we do this to prevent double multiplying
 		Iterator<Monom> it = this.iteretor();
 		Iterator<Monom> it2 = p1.iteretor();
 		while (it2.hasNext()) {
@@ -150,14 +151,14 @@ public class Polynom implements Polynom_able {
 			while (it.hasNext()) {
 				Monom multiplier = it.next();
 				outPut.add(Monom.multiply(multiplier, multiplier2));// adding to this helping Polynom the products of
-																	// all Monoms multiplied by every Monom in the input
-																	// Polynom
+				// all Monoms multiplied by every Monom in the input
+				// Polynom
 			}
 			it = this.iteretor();
 		}
 		this.polynom.clear();// using the "clear" method to make the Polynom which the method was used on
-								// empty, now we'll add all the products which we got in outPut to this Polynom,
-								// as we want this Polynom values to be the product between all Monoms
+		// empty, now we'll add all the products which we got in outPut to this Polynom,
+		// as we want this Polynom values to be the product between all Monoms
 		Iterator<Monom> it3 = outPut.iteretor();
 		while (it3.hasNext()) {
 			Monom result = it3.next();
@@ -177,11 +178,11 @@ public class Polynom implements Polynom_able {
 	@Override
 	public boolean equals(Polynom_able p1) {
 		boolean isEqual = true;// this boolean variable starts as "true" but in case we'll find two not similar
-								// Monoms we'll change it to false, this is our output value
+		// Monoms we'll change it to false, this is our output value
 		Iterator<Monom> it = this.iteretor();
 		Iterator<Monom> it2 = p1.iteretor();
 		while (it.hasNext() && it2.hasNext() && isEqual) {// as long as there are Monoms to keep comparing, and as long
-															// we haven't found any Monoms which are not similar
+			// we haven't found any Monoms which are not similar
 			Monom firstPoly = it.next();
 			Monom secPoly = it2.next();
 			if (firstPoly.get_coefficient() != secPoly.get_coefficient()
@@ -189,7 +190,7 @@ public class Polynom implements Polynom_able {
 				isEqual = false;
 		}
 		if ((it.hasNext() || it2.hasNext()) && isEqual)// if we havent found any different Monoms in both lists, but one
-														// of the lists has more elements, these Polynoms isn't equal
+			// of the lists has more elements, these Polynoms isn't equal
 			isEqual = false;
 		return isEqual;
 	}
@@ -202,7 +203,7 @@ public class Polynom implements Polynom_able {
 	@Override
 	public boolean isZero() {
 		if (this.polynom.isEmpty()) // an empty Polynom is a zero one, as we use the "fixUp" method this is the only
-									// option to get a zero Polynom
+			// option to get a zero Polynom
 			return true;
 		return false;
 	}
@@ -264,7 +265,7 @@ public class Polynom implements Polynom_able {
 	public Polynom_able copy() {
 		Iterator<Monom> it = this.iteretor();
 		Polynom outPut = new Polynom();// as we want to create a DEEP copy, we should create a new Polynom_able
-										// type object to return
+		// type object to return
 		while (it.hasNext()) {// copying all Monoms from the Polynom which should be copied to the outPut
 			Monom runningMonom = it.next();
 			Monom deepCopyMonom = new Monom(runningMonom);// creating a NEW Monom object, as the request is a DEEP copy
@@ -286,8 +287,8 @@ public class Polynom implements Polynom_able {
 		while (it.hasNext()) {
 			Monom runningMonom = it.next();
 			outPut.add(runningMonom.derivative());// using the Monom derivative method which returns a derivative for
-													// every Monom
-													// in the list, adding them all - thats the Polynoms derivative
+			// every Monom
+			// in the list, adding them all - thats the Polynoms derivative
 		}
 		return outPut;
 	}
@@ -335,20 +336,20 @@ public class Polynom implements Polynom_able {
 			return "0";
 		}
 		String outPut = "";// we are going to add all the string values to this variable which will be
-							// returned
+		// returned
 		Iterator<Monom> it = this.iteretor();
 		boolean first = true;
 		while (it.hasNext()) {
 			Monom runningMonom = it.next();
 			if (first) {
 				outPut = "" + runningMonom.toString();// adding first monom to the output string, we dont want it to
-														// get a "+", so we have to use the boolean variable
+				// get a "+", so we have to use the boolean variable
 				first = false;
 			} else {
 				if (runningMonom.get_coefficient() > 0)// if this Monom is positive - add a "+" before it
 					outPut = outPut + "+" + runningMonom.toString();
 				else if (runningMonom.get_coefficient() != 0)// if it is a negative one, the "-" before it is already
-																// there
+					// there
 					outPut += runningMonom.toString();
 			}
 		}
@@ -473,7 +474,7 @@ public class Polynom implements Polynom_able {
 		Polynom outPut = new Polynom();// this will be the output of this method
 		String helpingStr = "";
 		for (int i = 0; i < str.length(); i++) {// replacing every '-' char with "-*" to represent the '-' in further
-												// use
+			// use
 			if (str.charAt(i) == '-') {
 				helpingStr = helpingStr + "" + str.charAt(i) + "*";
 			} else
@@ -487,7 +488,7 @@ public class Polynom implements Polynom_able {
 				for (int i = 0; i < strArr_2.length; i++) {
 					if (strArr_2[i].contains("*")) {// this way we know if there was a '-' before the split
 						Monom m = new Monom(strArr_2[i].replaceAll("\\*", "-"));// replacing all '*' we got with '-' as
-																				// we already stated
+						// we already stated
 						outPut.add(m);
 					} else if (!runningStr.equals("")) {// in case we havn't got a '-'
 						Monom m = new Monom(strArr_2[i]);
@@ -514,16 +515,16 @@ public class Polynom implements Polynom_able {
 		Iterator<Monom> it = this.iteretor();
 		boolean isSubtracted = false;
 		while (it.hasNext() && !isSubtracted) {// as long as the Monom isn't subtracted yet, and there are more Monoms
-												// in the list to check with
+			// in the list to check with
 			Monom runningMonom = it.next();
 			if (runningMonom.get_power() == m1.get_power()) {// only in a case where both powers are equal we'll
-																// subtract
+				// subtract
 				runningMonom.subtract(m1);
 				isSubtracted = true;
 			}
 		}
 		if (!isSubtracted) {// in case we couldn't find a Monom with same power in the list, we'll just add
-							// it as a negative Monom and we'll sort the list
+			// it as a negative Monom and we'll sort the list
 			Monom negative = new Monom(m1.get_coefficient() * (-1), m1.get_power());
 			this.add(negative);
 			Comparator<Monom> cmpMonoms = new Monom_Comperator();
@@ -559,7 +560,129 @@ public class Polynom implements Polynom_able {
 				it.remove();
 		}
 	}
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+	//identifies if a point is a minima or a maxima
+	private ArrayList<Point> sortPoints(ArrayList<Double> arr) {
+
+		ArrayList<Point>points=new ArrayList<Point>();		//holds our points
+		Iterator<Double>input=arr.iterator();		
+		double eps=0.1;								//difference checked
+		double temp=0;
+		Polynom der=(Polynom)this.derivative();		
+
+		while(input.hasNext()) {   
+			temp=input.next();
+			Point p=new Point(temp,this.f(temp));	//converts all of the x values given to points on the function
+			if(der.f(p.getX()-eps)>0&&der.f(p.getX()+eps)<0) p.setMax(true);	//sort if min or max
+			else p.setMin(true);
+			points.add(p);							//adds them to the array list
+		}
+
+		return points;
+	}
+	//takes arraylist of points, finds the global min and the global max in it and checks if
+	//the borders are the global min||max
+	private void findGlobalP(double x0, double x1,ArrayList<Point> points) {
+
+		Iterator<Point>it=points.iterator();
+		findMin(points);
+		findMax(points);
+		double y0=this.f(x0);
+		double y1=this.f(x1);
+		Point newMin;
+		Point newMax;
+		boolean areEqual=false;
+		Point temp;
+		if(y0<y1) {
+			newMin=new Point(x0,y0);
+			newMax=new Point(x1,y1);
+			
+		}
+		else if(y0>y1) {
+			newMin=new Point(x1,y1);
+			newMax=new Point(x0,y0);
+		}
+		else {
+			areEqual=true;
+			newMin=new Point(x0,y0);
+			newMax=new Point(x1,y1);
+		}
+		while(it.hasNext()) {
+			temp=it.next();
+			if(temp.isGlobalMin()&&y0<temp.getY()) {
+				temp.setGlobalMin(false);
+				if(!areEqual) {
+				newMin.setGlobalMin(true);
+				points.add(newMin);
+				}
+				else {
+					newMin.setGlobalMin(true);
+					newMax.setGlobalMin(true);
+					points.add(newMin);
+					points.add(newMax);
+				}
+			}
+			if(temp.isGlobalMin()&&y0>temp.getY()) {
+				temp.setGlobalMax(false);
+				if(!areEqual) {
+				newMin.setGlobalMax(true);
+				points.add(newMin);
+				}
+				else {
+					newMin.setGlobalMax(true);
+					newMax.setGlobalMax(true);
+					points.add(newMin);
+					points.add(newMax);
+				}
+			}
+		}
+
+
+
+	}
+	//find global min in arraylist of points
+	private void findMin(ArrayList<Point> points) { //assumes has atleast one point
+
+		Iterator<Point>it=points.iterator();
+		Point minP=it.next();
+		minP.setGlobalMin(true);
+		Point temp;
+
+		while(it.hasNext()) {
+			temp=it.next();
+			if(minP.getY()>temp.getY()) {
+				minP=temp;
+				Iterator<Point>it2=points.iterator();
+				while(it2.hasNext())it.next().setGlobalMin(false);		//resets all previous Global mins
+				minP.setGlobalMin(true);
+			}
+			else if(minP.getY()==temp.getY())temp.setGlobalMin(true);
+		}
+	}
+	//find global max in arraylist of points
+	private void findMax(ArrayList<Point> points) { //assumes has atleast one point
+
+		Iterator<Point>it=points.iterator();
+		Point maxP=it.next();
+		maxP.setGlobalMax(true);
+		Point temp;
+
+		while(it.hasNext()) {
+			temp=it.next();
+			if(maxP.getY()<temp.getY()) {
+				maxP=temp;
+				Iterator<Point>it2=points.iterator();
+				while(it2.hasNext())it.next().setGlobalMax(false);		//resets all previous Global mins
+				maxP.setGlobalMax(true);
+			}
+			else if(maxP.getY()==temp.getY())temp.setGlobalMax(true);
+		}
+	}
+=======
+>>>>>>> da0b7efabb148216bd65b187459ed011aa7e1ebe
 	/**
 	 * returns the local extremum points in the Polynom used on in a certain given
 	 * borders NOTE: if (x0>x1) ===> the method will swap them
@@ -601,4 +724,5 @@ public class Polynom implements Polynom_able {
 		return pArray;
 	}
 
+>>>>>>> 09e6c9fa40a675a047307b33537f51f4d18f1ebb
 }
