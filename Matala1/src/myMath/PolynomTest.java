@@ -3,7 +3,13 @@ package myMath;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-
+/**
+ * This is a JUnit testing case for the Polynom class, tests every public method the
+ * class has
+ * 
+ * @author David
+ *
+ */
 class PolynomTest {
 	/**
 	 * Tests Polynom f(x) function
@@ -106,7 +112,7 @@ class PolynomTest {
 		
 	}
 	/**
-	 * tests the 
+	 * tests the root function 
 	 */
 	@Test
 	void testRoot() {

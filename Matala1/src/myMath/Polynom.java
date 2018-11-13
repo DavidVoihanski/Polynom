@@ -45,7 +45,7 @@ public class Polynom implements Polynom_able {
 	 * @param str
 	 *            String input which represents the soon to be Polynom
 	 */
-	public Polynom(String str) {// string Ploynom constructor supported by the Monom class string constructor
+	public Polynom(String str)throws RuntimeException {// string Ploynom constructor supported by the Monom class string constructor
 		if (str.equals("0") || str.equals("")) {// in case the string is just "0" or the empty one
 			this.polynom = new ArrayList<>();
 			return;
@@ -230,7 +230,7 @@ public class Polynom implements Polynom_able {
 	 *         https://en.wikipedia.org/wiki/Bisection_method
 	 */
 	@Override
-	public double root(double x0, double x1, double eps) {
+	public double root(double x0, double x1, double eps)throws RuntimeException {
 		double middle = 0;
 
 		if (x0 >= x1)
@@ -349,13 +349,13 @@ public class Polynom implements Polynom_able {
 	}
 
 	/**
-	 * calculates the area above x-axis of a polynom in a certain area, to the right
-	 * of x1 and to the left of x1 as asked, using the numeric method of splitting
+	 * calculates the area above x-axis of a polynom in a certain given borders, to the right
+	 * of x0 and to the left of x1 as asked, using the numeric method of splitting
 	 * the area to eps based rectangle and summing their surface
 	 * 
 	 * NOTE:if (x0>x1) ===> the method will swap them
 	 * 
-	 * NOTE2:this method will ignore rectangles which f(x0)<0 or f(x1)<0, as this
+	 * NOTE2:this method will ignore rectangles for which f(x0)<0 or f(x1)<0, as this
 	 * method calculates only the area above x-axis
 	 * 
 	 * @param x0
@@ -379,6 +379,7 @@ public class Polynom implements Polynom_able {
 		double h = 0; // height
 
 		if (x0 > x1) { // swaps
+			System.out.println("x0 has bigger vaule than x1, values SWAPPED");
 			double temp = x0;
 			x0 = x1;
 			x1 = temp;

@@ -3,9 +3,19 @@ package myMath;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+/**
+ * This is a JUnit testing case for the Monom class, tests every public method the
+ * class has
+ * 
+ * @author Evgeny
+ *
+ */
 class MonomTest {
 	private Monom tester;// setting private Monom to use in all tests
 
+	/**
+	 * testing Monoms (double,int) constructor
+	 */
 	@Test
 	void testMonomDoubleInt() {// testing basic Monom constructor
 		tester = new Monom(3, 4);
@@ -24,7 +34,9 @@ class MonomTest {
 			fail("HAVENT THROWN AN EXCEPTION WITH NEGATIVE POWER OF MONOM!");
 		}
 	}
-
+/**
+ * testing Monoms copy constructor
+ */
 	@Test
 	void testMonomMonom() {
 		Monom tester2 = new Monom(3, 3);// setting up a new Monom
@@ -45,7 +57,9 @@ class MonomTest {
 			fail("HAVENT THROWN AN EXCEPTION WITH NULL MONOM!");
 		}
 	}
-
+/**
+ * testing Monoms String constructor
+ */
 	@Test
 	void testMonomString() {
 		tester = null;
@@ -87,7 +101,9 @@ class MonomTest {
 		if (tester.get_coefficient() != (-1) || tester.get_power() != 56)
 			fail("VALUES ARE NOT RIGHT IN THE STRING CONSTURCTOR" + tester);
 	}
-
+/**
+ * Testing Monoms f method
+ */
 	@Test
 	void testF() {
 		// testing this method by comparing the value of the output of the method to the
@@ -105,7 +121,9 @@ class MonomTest {
 			fail("f function dosent return right value, " + tester + " with (-34) x value");
 
 	}
-
+/**
+ * testing Monoms get_power method
+ */
 	@Test
 	void testGet_power() {
 		// testing getPower method with different kinds of Monoms
@@ -122,7 +140,9 @@ class MonomTest {
 		if (tester.get_power() != 1)
 			fail("wrong value for " + tester + " using getPower method ");
 	}
-
+/**
+ * testing Monoms get_coefficietn method
+ */
 	@Test
 	void testGet_coefficient() {
 		// testing getCoefficient method with different kinds of Monoms
@@ -139,7 +159,9 @@ class MonomTest {
 		if (tester.get_coefficient() != -3)
 			fail("wrong value for " + tester + " using getCoefficient method ");
 	}
-
+/**
+ * testing Monoms derivative method
+ */
 	@Test
 	void testDerivative() {
 		// testing the Derivative method by comparing the output of the method to the
@@ -157,7 +179,9 @@ class MonomTest {
 		if (tester.derivative().get_coefficient() != -3 || tester.derivative().get_power() != 0)
 			fail("wrong value for " + tester + " using Derivative method ");
 	}
-
+/**
+ * testing Monoms add method
+ */
 	@Test
 	void testAdd() {
 		// testing negative Monom with positive Monom
@@ -185,7 +209,9 @@ class MonomTest {
 		if (tester.get_coefficient() != 45 || tester.get_power() != 4)
 			fail("wrong value for " + tester + " " + tester2 + " using add method ");
 	}
-
+/**
+ * testing Monoms multiply static method
+ */
 	@Test
 	void testMultiply() {
 		// testing negative Monom with positive Monom
@@ -214,7 +240,9 @@ class MonomTest {
 		if (Monom.multiply(tester, tester2).get_coefficient() != 45 || Monom.multiply(tester, tester2).get_power() != 4)
 			fail("wrong value for " + tester + " " + tester2 + " using multiply method ");
 	}
-
+/**
+ * testong Monoms subtract method
+ */
 	@Test
 	void testSubtract() {
 		// testing negative Monom with positive Monom
@@ -242,7 +270,9 @@ class MonomTest {
 		if (tester.get_coefficient() != 45)
 			fail("wrong value for " + tester + " " + tester2 + " using subtract method ");
 	}
-
+/**
+ * testing Monoms toString method
+ */
 	@Test
 	void testToString() {
 		// testing the toString method by comparing the String output to the expected

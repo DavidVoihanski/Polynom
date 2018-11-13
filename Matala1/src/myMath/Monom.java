@@ -30,11 +30,12 @@ public class Monom implements function {
 	 * Polynom class String constructor, this method creates a new Monom which
 	 * values determined by the String input
 	 * 
-	 * **NOTE: this constructor works only on "ax^b" type of expression, where a is
-	 * a double type variable, and b is a NON NEGATIVE integer type variable,this
-	 * constructor WILL NOT work for any non logically correct string other then the
-	 * empty one, in this case this constructor will create a zero value Monom, for
-	 * more information please check the "readMe" file
+	 * **NOTE: this constructor works only on logically correct type of expressions,
+	 * where a is a double type variable, and b is a NON NEGATIVE integer type
+	 * variable,this constructor WILL NOT work for any non logically correct string
+	 * other then the empty one, in this case this constructor will create a zero
+	 * value Monom, for more information please check the "readMe" file, example for
+	 * correct input: "43","-33","3x","3x^5","33.3x^32"
 	 * 
 	 * @param str
 	 *            String input which represents the soon to be Monom
@@ -42,7 +43,7 @@ public class Monom implements function {
 	 * 
 	 * 
 	 */
-	public Monom(String str) {
+	public Monom(String str)throws RuntimeException {
 		if (str.equals("")) {// in case the string is an empty one
 			this.set_coefficient(0);
 			this.set_power(0);
@@ -111,8 +112,8 @@ public class Monom implements function {
 	 * 
 	 * @param addend
 	 *            a input Monom which should be summed with the one the method is
-	 *            used on NOTE: if both Monoms got diffrent powers - the method will
-	 *            print an eror message and will do nothing
+	 *            used on NOTE: if both Monoms got different powers - the method will
+	 *            print an error message and will do nothing
 	 */
 	public void add(Monom addend) {
 		if (this.get_power() != addend.get_power() && addend._coefficient != 0) {// checking whether you can add these
