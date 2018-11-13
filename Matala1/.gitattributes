@@ -1,2 +1,2 @@
 $ cat .gitattributes
-JavaDoc linguist-language=java
+*linguist-language=java
