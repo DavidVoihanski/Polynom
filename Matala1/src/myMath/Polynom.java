@@ -459,6 +459,7 @@ public class Polynom implements Polynom_able {
 		}
 		return -sumOfArea; // makes the answer positive because area can't be negative
 	}
+<<<<<<< HEAD
 	/**
 	 * 
 	 */
@@ -471,6 +472,9 @@ public class Polynom implements Polynom_able {
 		return points;
 		
 	}
+=======
+
+>>>>>>> 22fa05fd66aa30b81832f80a61e75ff9119b0f96
 	//////////////////////////// private supporting methods:
 	/**
 	 * private static method which supports Polynom String constructor
@@ -551,26 +555,34 @@ public class Polynom implements Polynom_able {
 	 */
 	private void fixUp() {
 		Iterator<Monom> it = this.iteretor();
-		Monom runningMonom = null;
-		while (it.hasNext()) {
+		Monom runningMonom;// we'll use this runningMonom for all method long so we'll declare it here
+		while (it.hasNext()) {// removing all zero values might be in the list
 			runningMonom = it.next();
 			if (runningMonom.get_coefficient() == 0)
 				it.remove();
 		}
-		for (int index = 0; index < this.polynom.size() - 1; index++) {
+		for (int index = 0; index < this.polynom.size() - 1; index++) {// if we got two Monoms with the same power -
+																		// we'll sum them
 			if (this.polynom.get(index).get_power() == this.polynom.get(index + 1).get_power()) {
 				this.polynom.get(index).add(this.polynom.get(index + 1));
 				this.polynom.remove(index + 1);
 			}
 		}
-		it = this.iteretor();
-		while (it.hasNext()) {
+		it = this.iteretor();//resting the iterator
+		while (it.hasNext()) {//checking whether there are zero valued Monoms
 			runningMonom = it.next();
 			if (runningMonom.get_coefficient() == 0)
 				it.remove();
 		}
 	}
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+>>>>>>> 22fa05fd66aa30b81832f80a61e75ff9119b0f96
 	//identifies if a point is a minima or a maxima
 	private ArrayList<Point> sortPoints(ArrayList<Double> arr) {
 
@@ -690,7 +702,12 @@ public class Polynom implements Polynom_able {
 			else if(maxP.getY()==temp.getY())temp.setGlobalMax(true);
 		}
 	}
+<<<<<<< HEAD
 
+=======
+=======
+>>>>>>> da0b7efabb148216bd65b187459ed011aa7e1ebe
+>>>>>>> 22fa05fd66aa30b81832f80a61e75ff9119b0f96
 	/**
 	 * returns the local extremum points in the Polynom used on in a certain given
 	 * borders NOTE: if (x0>x1) ===> the method will swap them
@@ -711,15 +728,20 @@ public class Polynom implements Polynom_able {
 			x1 = temp;
 		}
 		ArrayList<Double> pArray = new ArrayList<>();
-		Polynom dev = (Polynom) this.derivative();
-		double extremumX;
-		double eps = 0.1;
-		double currentX = x0;
-		while (currentX <= x1) {
-			if (dev.f(currentX) * dev.f(currentX + eps) < 0) {
-				if (dev.derivative().f(currentX) != eps && dev.derivative().f(currentX) != -eps) {
-					extremumX = dev.root(currentX, (currentX + eps), eps);
-					pArray.add(extremumX);
+		Polynom dev = (Polynom) this.derivative();// creating a Polynom which represents this Polynoms derivative
+		double extremumX;// this will be our x value if the point is suspected to be extremum point
+		double eps = 0.1;// eps with which we'll "travel" on the function
+		double currentX = x0;// "running" x
+		while (currentX <= x1) {// as long as we're in the given borders
+			if (dev.f(currentX) * dev.f(currentX + eps) < 0) {// in case one point is negative while the other is
+																// positive
+				if (dev.derivative().f(currentX) < eps && dev.derivative().f(currentX) > -eps) {// checking whether this
+																								// isn't a inflection
+																								// point
+
+					extremumX = dev.root(currentX, (currentX + eps), eps);// determine where the derivative is zero
+																			// valued
+					pArray.add(extremumX);// adding the x value which we found to the ArrayList
 				}
 			}
 			currentX += eps;
