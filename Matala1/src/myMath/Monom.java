@@ -8,7 +8,7 @@ package myMath;
  * support simple operations as: construction, value at x, derivative, add and
  * multiply.
  * 
- * @author Evgeny&David
+ * @author Boaz
  *
  */
 public class Monom implements function {
@@ -43,7 +43,7 @@ public class Monom implements function {
 	 * 
 	 * 
 	 */
-	public Monom(String str) throws RuntimeException {
+	public Monom(String str)throws RuntimeException {
 		if (str.equals("")) {// in case the string is an empty one
 			this.set_coefficient(0);
 			this.set_power(0);
@@ -112,8 +112,8 @@ public class Monom implements function {
 	 * 
 	 * @param addend
 	 *            a input Monom which should be summed with the one the method is
-	 *            used on NOTE: if both Monoms got different powers - the method
-	 *            will print an error message and will do nothing
+	 *            used on NOTE: if both Monoms got different powers - the method will
+	 *            print an error message and will do nothing
 	 */
 	public void add(Monom addend) {
 		if (this.get_power() != addend.get_power() && addend._coefficient != 0) {// checking whether you can add these
@@ -291,77 +291,75 @@ public class Monom implements function {
 
 	// private methods which supprot the Monom String constructor, building Monoms
 	// from all kinds based on the logical state which the "innit" method is in
-
-	private static Monom creatMonomWithNoPower(String str) {// the constructor will send us here only in case the String
-															// input is without a power
-		boolean hasVar = false;// this will help us determine whether the String has an 'x'
+	private static Monom creatMonomWithNoPower(String str) {
+		boolean hasVar = false;
 		if (str.contains("x"))
 			hasVar = true;
-		String helpingString = "";// setting up empty String for later use
-		char[] cArray = str.toCharArray();// turning our String to a char array for easier use
-		Monom OutPut;// this will be our output
-		double coefficient;// this will be the coefficient used in the Monom constructor
-		char c = cArray[0];
-		for (int index = 0; index < cArray.length && c != 'x';) {// as long as we haven't reached 'x' or the end of the
-																	// char array, keep saving the chars (which soon
-																	// will be the coefficient)
+		String helpingString = "";
+		char[] cArray = str.toCharArray();
+		Monom OutPut;
+		double coefficient = 0;
+		int index = 0;
+		char c = cArray[index];
+		while (index < cArray.length && c != 'x') {
 			helpingString += "" + c;
 			index++;
 			if (index < cArray.length)
 				c = cArray[index];
 		}
-		coefficient = Double.parseDouble(helpingString);// parsing the helpingString we collected to a double type data
-														// which is Monoms coefficient
-		if (hasVar)// in case the String contains a variable, i.e. 'x'
+		coefficient = Double.parseDouble(helpingString);
+		if (hasVar)
 			OutPut = new Monom(coefficient, 1);
 		else
-			OutPut = new Monom(coefficient, 0);// in case there is no 'x'
+			OutPut = new Monom(coefficient, 0);
 		return OutPut;
 	}
 
-	private static Monom creatMonomWithPower(String str) {// the constructor will send us here only in case there was a
-															// power in the String input
-		String helpingString = "";// setting up empty String for later use
-		char[] cArray = str.toCharArray();// turning our String to a char array for easier use
-		Monom OutPut;// this will be our output
-		boolean hasCoe = true;// this will help us determine whether the String has a coefficient
-		int power;
+	private static Monom creatMonomWithPower(String str) {
+		String helpingString = "";
+		char[] cArray = str.toCharArray();
+		Monom OutPut;
+		boolean hasVar = true;
+		int power = 0;
 		double coefficient = 0;
-		int index = 0;// this will be our index going through the char array
+		int index = 0;
 		char c = cArray[index];
-		while (c != 'x') {// "collecting" the coefficient out of the chars
+		while (c != 'x') {
 			helpingString += "" + c;
 			index++;
 			c = cArray[index];
 		}
-		if (helpingString.equals("-")) {// if we only collected "-" so far, we'll turn it to "-1", a parameter the
-										// parser can handle
+		if (helpingString.equals("-")) {
 			helpingString = "-1";
 		}
-		if (!helpingString.equals("")) {// as long as the string isn't empty
+		if (!helpingString.equals("")) {
 			coefficient = Double.parseDouble(helpingString);
-			helpingString = "";// reseting the helpingString
+			helpingString = "";
 		} else {
-			hasCoe = false;// if the string we collected is empty - there is no coefficient
+			hasVar = false;
 		}
-		index += 2;// move two places forward (in the char array)
+		index += 2;
 		c = cArray[index];
-		while (index < cArray.length) {// now we'll "collect" the power
+		while (index < cArray.length) {
 			helpingString += "" + c;
 			index++;
 			if (index < cArray.length)
 				c = cArray[index];
 		}
-		power = Integer.parseInt(helpingString);
-		if (hasCoe)//in case there is coefficient 
+		try {
+			power = Integer.parseInt(helpingString);
+		} catch (Exception e) {
+			throw new RuntimeException("POWER IS NOT INT");
+		}
+		if (hasVar)
 			OutPut = new Monom(coefficient, power);
 		else
-			OutPut = new Monom(1, power);//in case there isn't well set it up as 1
+			OutPut = new Monom(1, power);
 		return OutPut;
 	}
 
 	// private method that calculates how many of certain char is in a string,
-	// supporting the "init" Monom method
+	// supporting the "innit" Monom method
 	private static int howManyChar(String str, char c) {
 		int sum = 0;
 		for (int index = 0; index < str.length(); index++) {

@@ -164,18 +164,5 @@ class PolynomTest {
 		if(!origin.equals(copy))fail("copy() function failed");
 		
 	}
-	   /**
-	    * tests the negArea() function
-	    */
-		@Test
-		void testNegArea(){
-			
-			Polynom p=new Polynom("0.2x^4-1.5x^3+3.0x^2-1x^1-5x^0");
-			double expected=25.18374177435346;
-			double eps=0.001;
-			double result=p.negArea(-2, 6, eps);
-			if(result>=expected+eps||result<=expected-eps)fail("The area() function failed");
-			//checks if the result is in the expected+eps<=x<=expected-eps range
-			
-		}
+	
 }
