@@ -355,7 +355,7 @@ public class Polynom implements Polynom_able {
 	 * 
 	 * NOTE:if (x0>x1) ===> the method will swap them
 	 * 
-	 * NOTE2:this method will ignore rectangles for which f(x0)<0 or f(x1)<0, as this
+	 * NOTE2:this method will ignore rectangles for which the area is negative, as this
 	 * method calculates only the area above x-axis
 	 * 
 	 * @param x0
@@ -399,6 +399,56 @@ public class Polynom implements Polynom_able {
 				sumOfArea = sumOfArea + area; // if above x axis
 		}
 		return sumOfArea;
+	}
+	/**
+	 * calculates the area below x-axis of a polynom in a certain given borders, to the right
+	 * of x0 and to the left of x1 as asked, using the numeric method of splitting
+	 * the area to eps based rectangle and summing their surface
+	 * 
+	 * NOTE:if (x0>x1) ===> the method will swap them
+	 * 
+	 * NOTE2:this method will ignore rectangles for which the area is positive, as this
+	 * method calculates only the area below x-axis
+	 * 
+	 * @param x0
+	 *            double type variable, the start of the range in which we calculate
+	 *            the area above x - axis
+	 * @param x1
+	 *            double type variable, the end of the range in which we calculate
+	 *            the area above x - axis
+	 * @param eps
+	 *            double type variable, the base of the rectangle calculated,
+	 *            ASSUMED to be 0.01 or smaller, PLEASE NOTICE that a large eps will
+	 *            return not accurate area
+	 * 
+	 * @return the approximate area below the x axis above the Polynom function
+	 */
+	public double negArea(double x0, double x1, double eps) {
+
+		double area = 0; // temp for holding each area
+		double sumOfArea = 0; // sums of all the rectangles
+		double h = 0; // height
+
+		if (x0 > x1) { // swaps
+			System.out.println("x0 has bigger vaule than x1, values SWAPPED");
+			double temp = x0;
+			x0 = x1;
+			x1 = temp;
+		}
+		while (x0 + eps <= x1) {
+			h = f(x0);
+			area = eps * h;
+			if (area < 0)
+				sumOfArea = sumOfArea + area; // if below x axis
+			x0 = x0 + eps;
+		}
+		if (x0 < x1) { // calculates the remaining distance between x0-x1 when it's smaller than eps
+			double width = x1 - x0;
+			area = width * f(x0);
+			if (area < 0)
+				sumOfArea = sumOfArea + area; // if below x axis
+		}
+		return -sumOfArea;   //makes the answer positive because area can't be negative
 	}
 
 	//////////////////////////// private supporting methods:

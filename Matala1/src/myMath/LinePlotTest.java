@@ -19,8 +19,8 @@ public class LinePlotTest extends JFrame {
     }
 
     public static void main(String[] args) {
-        LinePlotTest frame = new LinePlotTest();
-        Polynom p=new Polynom("0.2x^4-1.5x^3+3.0x^2-1x^1-5x^0");
+       LinePlotTest frame = new LinePlotTest();
+       Polynom p=new Polynom("0.2x^4-1.5x^3+3.0x^2-1x^1-5x^0");
     	DataTable data = new DataTable(Double.class, Double.class);
     	for (double x = -2.0; x <= 6.0; x+=0.10) {
     	    double y = p.f(x);
@@ -39,9 +39,7 @@ public class LinePlotTest extends JFrame {
     	}
     	plot.add(min);
     	plot.getPointRenderers(min).get(0).setColor(color);
-    	//plot.getLineRenderers(min).get(0).setColor(color);
     	frame.setVisible(true);
-   
 
     }
 }
