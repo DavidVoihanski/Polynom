@@ -15,7 +15,7 @@ import de.erichseifert.gral.ui.InteractivePanel;
 public class LinePlotTest extends JFrame {
 	public LinePlotTest() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(800, 1000);
+		setSize(800, 800);
 	}
 
 	public static void main(String[] args) {
@@ -38,7 +38,7 @@ public class LinePlotTest extends JFrame {
 	    GlobalMinMax=Color.GREEN;
 	    DataTable extremum = new DataTable(Double.class, Double.class);
 	    DataTable globalExtremum = new DataTable(Double.class, Double.class);
-	    ArrayList<Point>temp=p.minMax(-2, 6);
+	    ArrayList<Point>temp=p.findMinMax(-2, 6);
 	    Iterator<Point>it=temp.iterator();
 	    while(it.hasNext()) {
 	    	Point currP=it.next();

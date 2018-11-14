@@ -543,24 +543,23 @@ public class Polynom implements Polynom_able {
 	}
 
 	// takes arraylist of points, finds the global min and the global max in it and
-	// checks if
-	// the borders are the global min||max
+	// checks if the borders are the global min||max
 	private void findGlobalP(double x0, double x1, ArrayList<Point> points) {
 		Iterator<Point> it = null;
-		boolean hadLocalExm = false;
-		if (!points.isEmpty()) {
+		boolean hadLocalExm = false;     
+		if (!points.isEmpty()) {        //if the arraylist had points
 			hadLocalExm = true;
 			it = points.iterator();
-			findMin(points);
-			findMax(points);
+			findMin(points);           //finds the global min
+			findMax(points);		   //finds the global max
 		}
-		double y0 = this.f(x0);
+		double y0 = this.f(x0);        //finds the y values for the given x0,x1 borders
 		double y1 = this.f(x1);
 		Point newMin;
 		Point newMax;
-		boolean areEqual = false;
-		Point temp;
-		if (y0 < y1) {
+		boolean areEqual = false;      //had equal y values
+		Point currP;
+		if (y0 < y1) {				   //finds the which of the point is suspected as a new global min/max
 			newMin = new Point(x0, y0);
 			newMax = new Point(x1, y1);
 
@@ -572,20 +571,20 @@ public class Polynom implements Polynom_able {
 			newMin = new Point(x0, y0);
 			newMax = new Point(x1, y1);
 		}
-		if (hadLocalExm) {
+		if (hadLocalExm) {                        //only checks it if the arraylist had point 
 			while (it.hasNext()) {
-				temp = it.next();
-				if (temp.isGlobalMin() && y0 < temp.getY()) {
-					temp.setGlobalMin(false);
-					if (!areEqual) {
+				currP = it.next();
+				if (currP.isGlobalMin() && newMin.getY() < currP.getY()) {	//if the current point was global min,  
+					currP.setGlobalMin(false);		//checks if the newMin is lower. and sets the global min accordingly
+					if (!areEqual) {                            
 						newMin.setGlobalMin(true);
-					} else {
+					} else {									//if equal border y values then both are min
 						newMin.setGlobalMin(true);
 						newMax.setGlobalMin(true);
 					}
 				}
-				if (temp.isGlobalMax() && y0 > temp.getY()) {
-					temp.setGlobalMax(false);
+				if (currP.isGlobalMax() && newMax.getY() > currP.getY()) {	//if the current point is global max checks if 
+					currP.setGlobalMax(false);                         //newMax is lower 
 					if (!areEqual) {
 						newMax.setGlobalMax(true);
 					} else {
@@ -595,14 +594,14 @@ public class Polynom implements Polynom_able {
 				}
 			}
 
-		} else {
-				points.add(newMax);
+		} else {                       //if the arraylist was empty, means we didn't have any min/max point
+				points.add(newMax);	   //so the borders are the new min/max
 				points.add(newMin);
 				newMax.setGlobalMax(true);
 				newMin.setGlobalMin(true);
 		}
-		if (hadLocalExm) {
-			if (newMin.isGlobalMin() || newMin.isGlobalMax())
+		if (hadLocalExm) {                                    //if one of the borders checked is the new global min
+			if (newMin.isGlobalMin() || newMin.isGlobalMax())//adds it to the arraylist
 				points.add(newMin);
 			if (newMax.isGlobalMax() || newMax.isGlobalMin())
 				points.add(newMax);
@@ -614,28 +613,29 @@ public class Polynom implements Polynom_able {
 
 		Iterator<Point> it = points.iterator();
 		Point minP = it.next();
-		minP.setGlobalMin(true);
+		minP.setGlobalMin(true);					//sets the currnt point to global min
 		Point temp;
 
-		while (it.hasNext()) {
-			temp = it.next();
-			if (minP.getY() > temp.getY()) {
+		while (it.hasNext()) {					//finds the new global min if exists
+			temp = it.next();						
+			if (minP.getY() > temp.getY()) {			//compares y values
 				minP = temp;
 				Iterator<Point> it2 = points.iterator();
 				while (it2.hasNext())
 					it2.next().setGlobalMin(false); // resets all previous Global mins
 				minP.setGlobalMin(true);
 			} else if (minP.getY() == temp.getY())
-				temp.setGlobalMin(true);
+				temp.setGlobalMin(true);			//there might be several global mins with the same value 
 		}
 	}
 
 	// find global max in arraylist of points
+	//works the same as findMin() abvoe but finds global max
 	private void findMax(ArrayList<Point> points) { // assumes has atleast one point
 
 		Iterator<Point> it = points.iterator();
 		Point maxP = it.next();
-		maxP.setGlobalMax(true);
+		maxP.setGlobalMax(true);		      
 		Point temp;
 
 		while (it.hasNext()) {
@@ -684,7 +684,7 @@ public class Polynom implements Polynom_able {
 																									// inflection
 																									// point
 
-					extremumX = dev.root(currentX, (currentX + eps), eps);// determine where the derivative is zero
+					extremumX = dev.root(currentX, (currentX + eps), 0.0001);// determine where the derivative is zero
 																			// valued
 					pArray.add(extremumX);// adding the x value which we found to the ArrayList
 				}
