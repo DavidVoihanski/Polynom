@@ -195,19 +195,6 @@ public class Polynom implements Polynom_able {
 	}
 
 	/**
-	 * checks whether given Polynom is the zero Polynom
-	 * 
-	 * @return the boolean value of whether the list is empty or not
-	 */
-	@Override
-	public boolean isZero() {
-		if (this.polynom.isEmpty()) // an empty Polynom is a zero one, as we use the "fixUp" method this is the only
-									// option to get a zero Polynom
-			return true;
-		return false;
-	}
-
-	/**
 	 * returns the root of given Polynom in a given range (to the left of x0 and to
 	 * the right of x1) using Bisection method
 	 * 
@@ -246,6 +233,19 @@ public class Polynom implements Polynom_able {
 				x1 = middle; // ignore the right side
 		}
 		return x1; // returns the root in the given range
+	}
+
+	/**
+	 * checks whether given Polynom is the zero Polynom
+	 * 
+	 * @return the boolean value of whether the list is empty or not
+	 */
+	@Override
+	public boolean isZero() {
+		if (this.polynom.isEmpty()) // an empty Polynom is a zero one, as we use the "fixUp" method this is the only
+									// option to get a zero Polynom
+			return true;
+		return false;
 	}
 
 	/**

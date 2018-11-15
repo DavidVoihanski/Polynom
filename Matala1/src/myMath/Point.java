@@ -109,4 +109,12 @@ public class Point {
 	public void setGlobalMin(boolean flag) {
 		this.globalMin=flag;
 	}
+	/**
+	 * return a String output ready to be printed
+	 */
+	@Override
+	public String toString() {
+		return "( " + x + ", " + y + " )";
+	}
+	
 }

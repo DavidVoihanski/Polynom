@@ -42,7 +42,7 @@ public class DrawPoly extends JFrame {
 	    Color minMax = new Color(0.0f, 0.3f, 1.0f);
 	    minMax=Color.RED;
 	    Color GlobalMinMax = new Color(0.0f, 0.3f, 1.0f);
-	    GlobalMinMax=Color.GREEN;
+	    GlobalMinMax=Color.ORANGE;
 	    DataTable extremum = new DataTable(Double.class, Double.class);     //datatable to hold our extremum points
 	    DataTable globalExtremum = new DataTable(Double.class, Double.class); //data table to hold our global extremum
 	    ArrayList<Point>temp=p.findMinMax(-2, 6);							//finds the extremums
