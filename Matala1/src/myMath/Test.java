@@ -3,6 +3,7 @@ package myMath;
 public class Test {
 	/**
 	 * This is a testing Main class for all methods from the Monom & Polynom Classes
+	 * @see belongs originaly to "Matala 0"
 	 * 
 	 * @author Evgeny
 	 *

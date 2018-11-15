@@ -8,7 +8,7 @@ package myMath;
  * support simple operations as: construction, value at x, derivative, add and
  * multiply.
  * 
- * @author Boaz
+ * @author Evgeny&David
  *
  */
 public class Monom implements function {
@@ -196,13 +196,7 @@ public class Monom implements function {
 	}
 	//////////////////////////// private supporting methods:
 
-	/**
-	 * private static method which supports Monom String constructor
-	 * 
-	 * @param str
-	 *            String type variable which represents the soon to be Monom
-	 * @return a new Monom type object which will be used in the String constructor
-	 */
+//private static method which supports Monom String constructor
 	private static Monom initStringMonom(String str) {
 		Monom OutPut = null;// setting up a null Monom for later use
 		if (str.equals("")) {// in case we got an empty string, turning it to the zero Monom
@@ -289,8 +283,8 @@ public class Monom implements function {
 		return OutPut;
 	}
 
-	// private methods which supprot the Monom String constructor, building Monoms
-	// from all kinds based on the logical state which the "innit" method is in
+	// these two private methods which support the Monom String constructor, building Monoms
+	// from all kinds, based on the logical state which the "init" method is in
 	private static Monom creatMonomWithNoPower(String str) {
 		boolean hasVar = false;
 		if (str.contains("x"))
