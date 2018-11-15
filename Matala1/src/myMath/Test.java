@@ -3,6 +3,7 @@ package myMath;
 public class Test {
 	/**
 	 * This is a testing Main class for all methods from the Monom & Polynom Classes
+	 * 
 	 * @see belongs originaly to "Matala 0"
 	 * 
 	 * @author Evgeny
@@ -10,8 +11,7 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		// Monom class test:
-		
-		
+
 		// testing the String constructor
 		Monom stringTest = new Monom("-5x^2");
 		// testing the toString method
@@ -113,8 +113,7 @@ public class Test {
 
 		// *******************
 		// Polynom class test:
-		
-		
+
 		// testing the string constructor with negative
 		// first element
 		Polynom polynomStringTest = new Polynom("-4x^3-3x^7+9x^3+0x^5");
@@ -212,7 +211,7 @@ public class Test {
 		// testing the area method on the same function
 		System.out.println("the area above x- axis of " + rootTest + "in the interval between 2 to 4 is:"
 				+ rootTest.area(2, 4, 0.001));
-		// the exact area based on the "wolframalpha" calculation is 6620.1
-	}
+		// the exact area based on the "wolframalpha" calculation is 6620.1 }
 
+	}
 }

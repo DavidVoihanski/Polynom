@@ -208,6 +208,15 @@ class PolynomTest {
 	}
 
 	/**
+	 * tests the negArea function, which is symmetric to the area function, only
+	 * calculating the area below x- axis instead of above
+	 */
+	@Test
+	void testNegArea() {
+		fail("Not yet implemented");
+	}
+
+	/**
 	 * tests the copy() function uses equals() function that we tested before
 	 */
 	@Test

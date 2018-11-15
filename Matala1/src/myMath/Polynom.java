@@ -370,7 +370,7 @@ public class Polynom implements Polynom_able {
 	 *            ASSUMED to be 0.01 or smaller, PLEASE NOTICE that a large eps will
 	 *            return not accurate area
 	 * 
-	 * @return the approximate area above the x axis under the Polynom function
+	 * @return the approximate area above the x axis and under the Polynom function
 	 */
 	@Override
 	public double area(double x0, double x1, double eps) {
@@ -400,6 +400,63 @@ public class Polynom implements Polynom_able {
 				sumOfArea = sumOfArea + area; // if above x axis
 		}
 		return sumOfArea;
+	}
+
+	/**
+	 * calculates the area below x-axis and above the Polynom function in a certain
+	 * given borders, to the right of x0 and to the left of x1 as asked, using the
+	 * numeric method of splitting the area to eps based rectangle and summing their
+	 * surface
+	 * 
+	 * NOTE:if (x0>x1) ===> the method will swap them and will "print" a massage
+	 * 
+	 * NOTE2:this method will ignore rectangles for which f(x0)>0 or f(x1)>0, as
+	 * this method calculates only the area below x-axis and above function
+	 * 
+	 * @param x0
+	 *            double type variable, the start of the range in which we calculate
+	 *            the area above x - axis
+	 * @param x1
+	 *            double type variable, the end of the range in which we calculate
+	 *            the area above x - axis
+	 * @param eps
+	 *            double type variable, the base of the rectangle calculated,
+	 *            ASSUMED to be 0.01 or smaller, PLEASE NOTICE that a large eps will
+	 *            return not accurate area
+	 * 
+	 * @return the approximate area below the x axis and above the Polynom function,
+	 *         as we speak of AREA and not the integral itself, the output will be
+	 *         positive
+	 */
+	public double negArea(double x0, double x1, double eps) {
+
+		double area = 0; // temp for holding each area
+		double sumOfArea = 0; // sums of all the rectangles
+		double h = 0; // height
+
+		if (x0 > x1) { // swaps
+			System.out.println("x0 has bigger vaule than x1, values SWAPPED");
+			double temp = x0;
+			x0 = x1;
+			x1 = temp;
+
+		}
+		while (x0 + eps <= x1) {
+			h = f(x0);
+			area = eps * h;
+			if (area < 0)
+				sumOfArea = sumOfArea + area; // if above x axis
+			x0 = x0 + eps;
+		}
+		if (x0 < x1) { // calculates the remaining distance between x0-x1 when it's smaller than eps
+			double width = x1 - x0;
+			area = width * f(x0);
+			if (area > 0)
+				sumOfArea = sumOfArea + area; // if above x axis
+		}
+		return (-1) * sumOfArea;// the integral is negative because it calculates area under the x-axis, but
+								// area can't be negative so we'll multiply it by (-1) to ensure we got positive
+								// output
 	}
 
 	/**
