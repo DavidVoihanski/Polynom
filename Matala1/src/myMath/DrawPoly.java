@@ -34,7 +34,7 @@ public class DrawPoly extends JFrame {
 	}
 
 	/**
-	 * Draws a given polynom's graph local extremum are drawn in red, global are
+	 * Draws a given polynom's graph local extremum are drawn in orange, global are
 	 * drawn in green.
 	 * 
 	 * @param x0
@@ -75,7 +75,7 @@ public class DrawPoly extends JFrame {
 		}
 		plot.add(extremum); // adds the extremum to our graph
 		plot.add(globalExtremum); // adds the global extremum to our graph
-		plot.getPointRenderers(extremum).get(0).setColor(minMax); // colors extremum in red
+		plot.getPointRenderers(extremum).get(0).setColor(minMax); // colors extremum in orange
 		plot.getPointRenderers(globalExtremum).get(0).setColor(GlobalMinMax); // colors the global in green
 		frame.setVisible(true); // shows the graph
 	}

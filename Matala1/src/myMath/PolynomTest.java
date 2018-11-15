@@ -200,7 +200,7 @@ class PolynomTest {
 		Polynom test = new Polynom("x^3");
 		double expected = 0.25;// expected area which should be the output
 		double eps = 0.001;
-		double result = test.area(-1, 1, eps);
+		double result = test.area(-1, 1, 0.0001);
 		if (result > expected + eps || result < expected - eps)
 			fail("The area() function failed");
 		// checks if the result is in the expected+eps<=x<=expected-eps range
@@ -216,7 +216,8 @@ class PolynomTest {
 		Polynom test = new Polynom("x^3");
 		double expected = 4;
 		double eps = 0.001;
-		if (test.negArea(-2, 0, eps) > expected + eps || test.negArea(-2, 0, eps) < expected - eps)
+		double result=test.negArea(-2, 2, 0.0001);
+		if (result > expected + eps || result < expected - eps)
 			fail("the negArea method failed with " + test + "returned " + test.negArea(-2, 0, 0.01) + "insted of "
 					+ expected);
 	}

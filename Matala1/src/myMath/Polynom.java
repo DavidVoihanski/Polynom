@@ -430,45 +430,40 @@ public class Polynom implements Polynom_able {
 	 */
 	public double negArea(double x0, double x1, double eps) {
 
-		double area = 0; // variable for holding each area
+		double area = 0; // temp for holding each area
 		double sumOfArea = 0; // sums of all the rectangles
-		double h = 0; // height of rectangles
+		double h = 0; // height
 
-		if (x0 > x1) { // swaps in case borders wasn't given right
+		if (x0 > x1) { // swaps
 			System.out.println("x0 has bigger vaule than x1, values SWAPPED");
 			double temp = x0;
 			x0 = x1;
 			x1 = temp;
 
 		}
-		while (x0 + eps <= x1) {// as long as we still in the borders we'll keep summing the rectangles
-			if (f(x0) <= 0) {// we want only the area below x-axis, i.e where y is negative
-				h = f(x0);// setting hieght to be the y value of this certain x
-				area = eps * h;// calculating rectangles area -> width*length
-				sumOfArea += area; // if below x axis
-			}
-			x0 += eps;
+		while (x0 + eps <= x1) {      //while we're still in the given range
+			h = f(x0);
+			area = eps * h;          //calculates the current ractangle's area
+			if (area < 0)
+				sumOfArea = sumOfArea + area; // if below x axis
+			x0 = x0 + eps;
 		}
 		if (x0 < x1) { // calculates the remaining distance between x0-x1 when it's smaller than eps
-			if (f(x0) <= 0) {// we want only the below x-axis area...
-				double width = x1 - x0;// reminder of "width"
-				area = width * f(x0);// rectangle area
-				sumOfArea = sumOfArea + area;
-				sumOfArea = Math.abs(sumOfArea);// the integral is negative because it calculates area under the x-axis,
-												// but
-				// area can't be negative so we'll multiply it by (-1) to ensure we got positive
-				// output
-			}
+			double width = x1 - x0;
+			area = width * f(x0);
+			if (area < 0)
+				sumOfArea = sumOfArea + area; // if below x axis
 		}
-		return sumOfArea;
+		return -sumOfArea;
 	}
 
 	/**
-	 * this method find local and global
+	 * this method find local and global extremum in a given range
+	 * uses Point class, see deco for more info about this class
 	 * 
-	 * @param x0
-	 * @param x1
-	 * @return
+	 * @param x0 the stating point 
+	 * @param x1 the end point
+	 * @return	returns an arraylist with points containing whether they are min/max/global
 	 */
 	public ArrayList<Point> findMinMax(double x0, double x1) {
 		ArrayList<Point> outPut = new ArrayList<>();
